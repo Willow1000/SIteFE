@@ -2,10 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useModal } from '../auth/ModalContext';
 
-export default function Navbar() {
+export default function AboutNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const { openSignup } = useModal();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,10 +22,11 @@ export default function Navbar() {
   };
 
   const navItems = [
-    { name: 'Features', href: '#features' },
-    { name: 'Performance', href: '#performance' },
-    { name: 'About', href: '#about' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Home', href: '/' },
+    { name: 'Team', href: '#team' },
+    { name: 'Achievements', href: '#achievements' },
+    { name: 'Testimonials', href: '#testimonials' },
+    { name: 'Contact', href: '#contact-location' },
   ];
 
   return (
@@ -36,7 +39,7 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
-          {/* Logo */}
+          {/* Logo - Redirects to / (root) */}
           <div className="flex-shrink-0">
             <Link href="/" className="flex items-center space-x-3 group">
               <div className="w-10 h-10 bg-[#4a9d7e] rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(74,157,126,0.3)] group-hover:shadow-[0_0_20px_rgba(74,157,126,0.5)] transition-all duration-300">
@@ -53,25 +56,19 @@ export default function Navbar() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="text-gray-400 hover:text-white hover:bg-white/5 px-4 py-2 rounded-lg transition-all duration-200 text-sm font-bold uppercase tracking-widest"
+                  className={`text-gray-400 hover:text-white hover:bg-white/5 px-4 py-2 rounded-lg transition-all duration-200 text-sm font-bold uppercase tracking-widest ${item.name === 'Home' ? 'text-[#4a9d7e]' : ''}`}
                 >
                   {item.name}
                 </Link>
               ))}
             </div>
             <div className="h-6 w-px bg-gray-800 mx-4" />
-            <Link
-              href="#login"
-              className="text-gray-300 hover:text-white transition-all duration-200 text-sm font-bold uppercase tracking-widest px-4 py-2"
-            >
-              Login
-            </Link>
-            <Link
-              href="#signup"
+            <button
+              onClick={openSignup}
               className="bg-[#4a9d7e] hover:bg-[#3d8567] text-white px-6 py-2.5 rounded-xl text-sm font-bold uppercase tracking-widest transition-all duration-300 shadow-[0_0_15px_rgba(74,157,126,0.2)] hover:shadow-[0_0_20px_rgba(74,157,126,0.4)]"
             >
               Get Started
-            </Link>
+            </button>
           </div>
 
           {/* Mobile menu button */}
@@ -103,27 +100,19 @@ export default function Navbar() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-gray-400 hover:text-white hover:bg-gray-800 block px-4 py-4 rounded-xl text-base font-bold uppercase tracking-widest transition-all duration-200"
+                className={`text-gray-400 hover:text-white hover:bg-gray-800 block px-4 py-4 rounded-xl text-base font-bold uppercase tracking-widest transition-all duration-200 ${item.name === 'Home' ? 'text-[#4a9d7e]' : ''}`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 {item.name}
               </Link>
             ))}
             <div className="pt-4 border-t border-gray-800 flex flex-col space-y-3">
-              <Link
-                href="#login"
-                className="text-gray-300 hover:text-white block px-4 py-4 text-base font-bold uppercase tracking-widest"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Login
-              </Link>
-              <Link
-                href="#signup"
+              <button
+                onClick={() => { openSignup(); setIsMenuOpen(false); }}
                 className="bg-[#4a9d7e] text-white block px-4 py-4 rounded-xl text-base font-bold uppercase tracking-widest text-center"
-                onClick={() => setIsMenuOpen(false)}
               >
                 Get Started
-              </Link>
+              </button>
             </div>
           </div>
         </div>
