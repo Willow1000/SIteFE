@@ -5,9 +5,47 @@ import { useModal } from '../auth/ModalContext';
 
 export default function Hero() {
   const [isMounted, setIsMounted] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [autoPlay, setAutoPlay] = useState(true);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mousePosition = useRef({ x: 0, y: 0 });
+  const autoPlayRef = useRef<NodeJS.Timeout | null>(null);
   const { openSignup } = useModal();
+
+  const slides = [
+    {
+      title: "Discover what your",
+      titleHighlight: "money is capable of",
+      subtitle: "One app, every opportunity to build your future. Invest, earn, and send money in just a few taps.",
+      cta1: "Open Your Account",
+      cta2: "Download the App",
+      badge: "Trusted by 50k+ Traders"
+    },
+    {
+      title: "Invest in",
+      titleHighlight: "100+ Cryptocurrencies",
+      subtitle: "Explore our selection of digital assets. Download the app, find your favorite crypto, and start building your portfolio.",
+      cta1: "Start Investing",
+      cta2: "Learn More",
+      badge: "Crypto Made Easy"
+    },
+    {
+      title: "Earn",
+      titleHighlight: "Passive Returns",
+      subtitle: "Hold assets like USDC, USDT, ETH, DOT, ATOM, and SOL, and watch your balance grow. Weekly earnings deposited directly to your account.",
+      cta1: "Start Earning",
+      cta2: "View Rates",
+      badge: "Your Assets Working for You"
+    },
+    {
+      title: "Your Money,",
+      titleHighlight: "Truly Borderless",
+      subtitle: "Cross-border transfers done right: fast, easy, and affordable. Send globally, receive locally. Easy and direct to your account.",
+      cta1: "Move Your Money",
+      cta2: "See Fees",
+      badge: "Borderless Transfers"
+    }
+  ];
 
   useEffect(() => {
     setIsMounted(true);
@@ -129,8 +167,38 @@ export default function Hero() {
     };
   }, []);
 
+  // Auto-play slideshow
+  useEffect(() => {
+    if (!autoPlay) return;
+
+    autoPlayRef.current = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 6000); // Change slide every 6 seconds
+
+    return () => {
+      if (autoPlayRef.current) clearInterval(autoPlayRef.current);
+    };
+  }, [autoPlay, slides.length]);
+
+  const handlePrevSlide = () => {
+    setAutoPlay(false);
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  };
+
+  const handleNextSlide = () => {
+    setAutoPlay(false);
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
+
+  const handleDotClick = (index: number) => {
+    setAutoPlay(false);
+    setCurrentSlide(index);
+  };
+
+  const slide = slides[currentSlide];
+
   return (
-    <section className="relative overflow-hidden bg-[#1a1d29] pt-24 pb-20 md:pt-40 md:pb-32 px-4 sm:px-6 lg:px-8">
+    <section className="relative overflow-hidden bg-[#1a1d29] pt-24 pb-20 md:pt-40 md:pb-32 px-4 sm:px-6 lg:px-8 min-h-screen flex items-center">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full pointer-events-none opacity-50"
@@ -141,50 +209,107 @@ export default function Hero() {
         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-[#4a9d7e]/5 blur-[100px] animate-pulse" style={{ animationDelay: '2s' }} />
       </div>
 
-      <div className={`relative max-w-7xl mx-auto text-center transition-all duration-1000 ease-out ${isMounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#4a9d7e]/10 border border-[#4a9d7e]/20 mb-8">
-          <span className="flex h-2 w-2 rounded-full bg-[#4a9d7e] animate-ping" />
-          <span className="text-[#4a9d7e] text-xs font-bold tracking-wider uppercase">AI Trading Engine v4.0 Live</span>
+      <div className="relative max-w-7xl mx-auto w-full">
+        {/* Slides Container */}
+        <div className="relative overflow-hidden">
+          {slides.map((s, index) => (
+            <div
+              key={index}
+              className={`transition-all duration-1000 ease-in-out ${
+                index === currentSlide
+                  ? 'opacity-100 translate-y-0'
+                  : 'opacity-0 translate-y-10 absolute inset-0'
+              }`}
+            >
+              <div className="text-center">
+                <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#4a9d7e]/10 border border-[#4a9d7e]/20 mb-8">
+                  <span className="flex h-2 w-2 rounded-full bg-[#4a9d7e] animate-ping" />
+                  <span className="text-[#4a9d7e] text-xs font-bold tracking-wider uppercase">{s.badge}</span>
+                </div>
+                
+                <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white mb-8 leading-[1.1] tracking-tight">
+                  {s.title} <br className="hidden md:block" />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4a9d7e] to-[#6bc99e]">
+                    {s.titleHighlight}
+                  </span>
+                </h1>
+                
+                <p className="text-lg md:text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
+                  {s.subtitle}
+                </p>
+                
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                  <button
+                    onClick={openSignup}
+                    className="group relative inline-flex items-center justify-center bg-[#4a9d7e] hover:bg-[#3d8567] text-white font-bold py-4 px-10 rounded-xl transition-all duration-300 shadow-[0_0_20px_rgba(74,157,126,0.3)] hover:shadow-[0_0_30px_rgba(74,157,126,0.5)] overflow-hidden"
+                  >
+                    <span className="relative z-10">{s.cta1}</span>
+                    <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700" />
+                  </button>
+                  
+                  <button
+                    onClick={openSignup}
+                    className="group inline-flex items-center justify-center text-gray-300 hover:text-white font-semibold py-4 px-10 rounded-xl border border-gray-700 hover:border-gray-500 transition-all duration-300"
+                  >
+                    {s.cta2}
+                    <svg className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
-        
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white mb-8 leading-[1.1] tracking-tight">
-          Institutional-Grade <br className="hidden md:block" />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4a9d7e] to-[#6bc99e]">
-            Asset Management
-          </span>
-        </h1>
-        
-        <p className="text-lg md:text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed transition-all duration-1000 delay-300">
-          Experience professional-grade algorithms and sophisticated trading tools 
-          designed for the modern investor. Precision, performance, and transparency.
-        </p>
-        
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 transition-all duration-1000 delay-500">
+
+        {/* Navigation Controls */}
+        <div className="mt-16 flex items-center justify-center gap-4">
+          {/* Previous Button */}
           <button
-            onClick={openSignup}
-            className="group relative inline-flex items-center justify-center bg-[#4a9d7e] hover:bg-[#3d8567] text-white font-bold py-4 px-10 rounded-xl transition-all duration-300 shadow-[0_0_20px_rgba(74,157,126,0.3)] hover:shadow-[0_0_30px_rgba(74,157,126,0.5)] overflow-hidden"
+            onClick={handlePrevSlide}
+            className="p-3 rounded-full border border-gray-700 hover:border-[#4a9d7e] text-gray-400 hover:text-[#4a9d7e] transition-all duration-300"
+            aria-label="Previous slide"
           >
-            <span className="relative z-10">Open Account</span>
-            <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700" />
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
           </button>
-          
+
+          {/* Dot Indicators */}
+          <div className="flex gap-2">
+            {slides.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => handleDotClick(index)}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  index === currentSlide
+                    ? 'bg-[#4a9d7e] w-8'
+                    : 'bg-gray-600 hover:bg-gray-500'
+                }`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
+
+          {/* Next Button */}
           <button
-            onClick={openSignup}
-            className="group inline-flex items-center justify-center text-gray-300 hover:text-white font-semibold py-4 px-10 rounded-xl border border-gray-700 hover:border-gray-500 transition-all duration-300"
+            onClick={handleNextSlide}
+            className="p-3 rounded-full border border-gray-700 hover:border-[#4a9d7e] text-gray-400 hover:text-[#4a9d7e] transition-all duration-300"
+            aria-label="Next slide"
           >
-            View Demo
-            <svg className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </button>
         </div>
 
-        <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-4 opacity-40 grayscale hover:grayscale-0 transition-all duration-700 delay-700">
+        {/* Stats Section */}
+        <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-4 opacity-40 grayscale hover:grayscale-0 transition-all duration-700">
           {[
             { label: 'AUM', value: '$2.4B+' },
             { label: 'Uptime', value: '99.9%' },
-            { label: 'Execution', value: '12ms' },
-            { label: 'Traders', value: '50k+' },
+            { label: 'Active Traders', value: '50k+' },
+            { label: 'Assets', value: '100+' },
           ].map((stat, i) => (
             <div key={i} className="flex flex-col items-center animate-float" style={{ animationDelay: `${i * 0.5}s` }}>
               <span className="text-white text-2xl font-bold">{stat.value}</span>

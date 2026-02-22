@@ -7,17 +7,17 @@ export default function Footer() {
       links: [
         { name: 'Features', href: '#features' },
         { name: 'Performance', href: '#performance' },
-        { name: 'Trading API', href: '#' },
-        { name: 'Security', href: '#' },
+        { name: 'Terms & Conditions', href: '/policies/terms-and-conditions' },
+        { name: 'Privacy Policy', href: '/policies/privacy-policy' },
       ],
     },
     {
       title: 'Company',
       links: [
-        { name: 'About Us', href: '#about' },
-        { name: 'Careers', href: '#' },
-        { name: 'Press', href: '#' },
-        { name: 'Contact', href: '#contact' },
+        { name: 'About Us', href: '/about' },
+        { name: "Where we're located", href: '/about#contact-location' },
+        { name: 'Our Staff', href: '/about#team' },
+        { name: 'Contact', href: '/about#contact-location' },
       ],
     },
     {
@@ -90,10 +90,10 @@ export default function Footer() {
               <Link href="#" className="text-gray-500 hover:text-white transition-colors duration-200 text-xs font-bold uppercase tracking-widest">
                 Risk Disclosure
               </Link>
-              <Link href="#" className="text-gray-500 hover:text-white transition-colors duration-200 text-xs font-bold uppercase tracking-widest">
+              <Link href="/policies/terms-and-conditions" className="text-gray-500 hover:text-white transition-colors duration-200 text-xs font-bold uppercase tracking-widest">
                 Terms of Service
               </Link>
-              <Link href="#" className="text-gray-500 hover:text-white transition-colors duration-200 text-xs font-bold uppercase tracking-widest">
+              <Link href="/policies/privacy-policy" className="text-gray-500 hover:text-white transition-colors duration-200 text-xs font-bold uppercase tracking-widest">
                 Privacy Policy
               </Link>
               <Link href="#" className="text-gray-500 hover:text-white transition-colors duration-200 text-xs font-bold uppercase tracking-widest">

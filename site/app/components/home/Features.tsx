@@ -30,7 +30,7 @@ export default function Features() {
   const features = [
     {
       id: 1,
-      title: 'AI Signals',
+      title: 'Automated Smart ignals',
       description: 'Cutting-edge AI-driven trading signals, for optimal entries and exits. Real-time processing for instant decision making.',
       icon: (
         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

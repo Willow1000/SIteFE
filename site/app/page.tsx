@@ -4,7 +4,9 @@ import Features from './components/home/Features';
 import Performance from './components/home/Performance';
 import TradingAssets from './components/home/TradingAssets';
 import Testimonials from './components/home/Testimonials';
+import Partners from './components/about/Partners';
 import FAQ from './components/home/FAQ';
+import CTA from './components/home/CTA';
 import Footer from './components/home/Footer';
 
 export default function Home() {
@@ -16,7 +18,9 @@ export default function Home() {
       <TradingAssets />
       <Performance />
       <Testimonials />
+      <Partners />
       <FAQ />
+      <CTA />
       <Footer />
     </main>
   );
