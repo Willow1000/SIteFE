@@ -24,9 +24,9 @@ export default function Navbar() {
   const navItems = [
     { name: 'Markets', href: '/#assets' },
     { name: 'Performance', href: '/#performance' },
-    { name: 'About Us', href: '/about' },
     { name: 'Testimonials', href: '/#testimonials' },
     { name: 'FAQ', href: '/#faq' },
+        { name: 'About Us', href: '/about' },
   ];
 
   return (
