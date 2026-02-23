@@ -26,7 +26,7 @@ export default function AboutNavbar() {
     { name: 'Team', href: '#team' },
     { name: 'Achievements', href: '#achievements' },
     { name: 'Testimonials', href: '#testimonials' },
-    { name: 'Contact', href: '#contact-location' },
+    { name: 'Contact Us', href: '#contact-location' },
   ];
 
   return (
