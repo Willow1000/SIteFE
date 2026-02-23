@@ -5,7 +5,7 @@ import { useModal } from '../auth/ModalContext';
 
 export default function AboutHero() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const mousePosition = useRef({ x: 0, y: 0 });
   const [currentSlide, setCurrentSlide] = useState(0);
   const [autoPlay, setAutoPlay] = useState(true);
   const autoPlayRef = useRef<NodeJS.Timeout | null>(null);
@@ -13,35 +13,35 @@ export default function AboutHero() {
 
   const slides = [
     {
-      badge: "Where Traders Invest",
-      title: "Discover what your",
-      titleHighlight: "money is capable of",
-      description: "For over a decade, we've been protecting and empowering traders with top-tier security, institutional-grade tools, and international licenses. Your trusted partner in building wealth.",
-      cta1: "Create Your Account",
-      cta2: "Learn Our Story"
+      badge: "Our Story",
+      title: "Welcome to",
+      titleHighlight: "SmartInvest",
+      description: "For over a decade, we've been at the forefront of financial innovation. We've protected and empowered thousands of traders with institutional-grade security, advanced tools, and unwavering commitment to excellence.",
+      cta1: "Explore Our Mission",
+      cta2: "Meet the Team"
     },
     {
       badge: "Our Mission",
-      title: "Empowering",
-      titleHighlight: "Individual Investors",
-      description: "We believe everyone deserves access to the same sophisticated tools and security as the world's largest institutions. That's why we built SmartInvest.",
-      cta1: "Join Us Today",
-      cta2: "Meet the Team"
+      title: "Democratizing",
+      titleHighlight: "Access to Markets",
+      description: "We believe everyone deserves access to the same sophisticated trading and investment tools as the world's largest institutions. SmartInvest was built on this principle—breaking down barriers and empowering individual investors globally.",
+      cta1: "Join Our Community",
+      cta2: "Learn More"
     },
     {
       badge: "Our Values",
       title: "Built on",
       titleHighlight: "Trust & Innovation",
-      description: "With international licenses, institutional-grade security, and a decade of proven track record, we've earned the trust of thousands of traders worldwide.",
-      cta1: "Start Your Journey",
+      description: "With international licenses, institutional-grade security, and a proven track record spanning over a decade, we've earned the trust of 50,000+ traders worldwide. Security, transparency, and innovation drive everything we do.",
+      cta1: "Discover Our Values",
       cta2: "See Our Achievements"
     },
     {
       badge: "Global Reach",
       title: "Serving Traders",
       titleHighlight: "Across the World",
-      description: "From LATAM to Asia, Europe to North America—SmartInvest is the platform where traders of all experience levels come to invest smarter and build their future.",
-      cta1: "Create Your Account",
+      description: "From LATAM to Asia, Europe to North America—SmartInvest is where traders of all experience levels come to invest smarter, grow their wealth, and achieve their financial goals with confidence.",
+      cta1: "Start Your Journey",
       cta2: "Explore Opportunities"
     }
   ];
@@ -73,16 +73,32 @@ export default function AboutHero() {
       constructor() {
         this.x = Math.random() * canvas!.width;
         this.y = Math.random() * canvas!.height;
-        this.size = Math.random() * 2 + 1;
-        this.speedX = Math.random() * 0.3 - 0.15;
-        this.speedY = Math.random() * 0.3 - 0.15;
-        this.color = 'rgba(74, 157, 126, ' + (Math.random() * 0.2 + 0.05) + ')';
+        this.size = Math.random() * 4 + 2;
+        this.speedX = (Math.random() * 0.2 - 0.1);
+        this.speedY = (Math.random() * 0.2 - 0.1);
+        this.color = 'rgba(74, 157, 126, ' + (Math.random() * 0.5 + 0.3) + ')';
       }
 
       update() {
+        // Subtle continuous movement
         this.x += this.speedX;
         this.y += this.speedY;
 
+        // Cursor repulsion - only for nearby particles
+        const dx = this.x - mousePosition.current.x;
+        const dy = this.y - mousePosition.current.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const repulsionRadius = 150;
+
+        if (distance < repulsionRadius && distance > 0) {
+          const force = (repulsionRadius - distance) / repulsionRadius;
+          const angle = Math.atan2(dy, dx);
+          // Slow, elegant repulsion
+          this.x += Math.cos(angle) * force * 2;
+          this.y += Math.sin(angle) * force * 2;
+        }
+
+        // Wrap around edges
         if (this.x > canvas!.width) this.x = 0;
         else if (this.x < 0) this.x = canvas!.width;
         if (this.y > canvas!.height) this.y = 0;
@@ -100,7 +116,7 @@ export default function AboutHero() {
 
     const initParticles = () => {
       particles = [];
-      const numberOfParticles = (canvas.width * canvas.height) / 15000;
+      const numberOfParticles = (canvas.width * canvas.height) / 8000;
       for (let i = 0; i < numberOfParticles; i++) {
         particles.push(new Particle());
       }
@@ -109,35 +125,35 @@ export default function AboutHero() {
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      ctx.strokeStyle = 'rgba(74, 157, 126, 0.03)';
-      ctx.lineWidth = 1;
-      const gridSize = 50;
-      const offsetX = (mousePos.x / window.innerWidth) * 10;
-      const offsetY = (mousePos.y / window.innerHeight) * 10;
-
-      for (let x = -gridSize; x < canvas.width + gridSize; x += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(x + offsetX, 0);
-        ctx.lineTo(x + offsetX, canvas.height);
-        ctx.stroke();
-      }
-      for (let y = -gridSize; y < canvas.height + gridSize; y += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(0, y + offsetY);
-        ctx.lineTo(canvas.width, y + offsetY);
-        ctx.stroke();
-      }
-
+      // Update particles with cursor position from ref
       particles.forEach(particle => {
         particle.update();
         particle.draw();
       });
 
+      // Draw particle connections
+      ctx.lineWidth = 0.8;
+      for (let a = 0; a < particles.length; a++) {
+        for (let b = a + 1; b < particles.length; b++) {
+          const dx = particles[a].x - particles[b].x;
+          const dy = particles[a].y - particles[b].y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < 200) {
+            ctx.strokeStyle = `rgba(74, 157, 126, ${0.25 * (1 - distance / 200)})`;
+            ctx.beginPath();
+            ctx.moveTo(particles[a].x, particles[a].y);
+            ctx.lineTo(particles[b].x, particles[b].y);
+            ctx.stroke();
+          }
+        }
+      }
+
       animationFrameId = requestAnimationFrame(animate);
     };
 
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
+      mousePosition.current = { x: e.clientX, y: e.clientY };
     };
 
     window.addEventListener('resize', resizeCanvas);
@@ -150,7 +166,7 @@ export default function AboutHero() {
       window.removeEventListener('mousemove', handleMouseMove);
       cancelAnimationFrame(animationFrameId);
     };
-  }, [mousePos]);
+  }, []);
 
   // Auto-play slideshow
   useEffect(() => {
@@ -186,14 +202,12 @@ export default function AboutHero() {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#1a1d29] pt-20">
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 z-0 pointer-events-none"
+        className="absolute inset-0 z-0 pointer-events-none opacity-100"
       />
       
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         {/* Slides Container */}
-        <div className="text-center transition-transform duration-700 ease-out"
-          style={{ transform: `translate(${(mousePos.x - window.innerWidth/2) * 0.01}px, ${(mousePos.y - window.innerHeight/2) * 0.01}px)` }}
-        >
+        <div className="text-center transition-transform duration-700 ease-out">
           {slides.map((s, index) => (
             <div
               key={index}

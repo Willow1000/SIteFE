@@ -16,7 +16,7 @@ export default function Hero() {
     {
       title: "Discover what your",
       titleHighlight: "money is capable of",
-      subtitle: "One app, every opportunity to build your future. Invest, earn, and send money in just a few taps.",
+      subtitle: "Invest in stocks, cryptocurrencies, and global assets. One app, every opportunity to build your financial future. Start with just $10.",
       cta1: "Open Your Account",
       cta2: "Download the App",
       badge: "Trusted by 50k+ Traders"
@@ -24,26 +24,26 @@ export default function Hero() {
     {
       title: "Invest in",
       titleHighlight: "100+ Cryptocurrencies",
-      subtitle: "Explore our selection of digital assets. Download the app, find your favorite crypto, and start building your portfolio.",
+      subtitle: "Explore our selection of digital assets including Bitcoin, Ethereum, and emerging altcoins. Download the app, find your favorite crypto, and start building your portfolio.",
       cta1: "Start Investing",
       cta2: "Learn More",
       badge: "Crypto Made Easy"
     },
     {
-      title: "Earn",
-      titleHighlight: "Passive Returns",
-      subtitle: "Hold assets like USDC, USDT, ETH, DOT, ATOM, and SOL, and watch your balance grow. Weekly earnings deposited directly to your account.",
-      cta1: "Start Earning",
-      cta2: "View Rates",
-      badge: "Your Assets Working for You"
+      title: "Trade",
+      titleHighlight: "Forex & Commodities",
+      subtitle: "Access major/minor currency pairs, precious metals, and energy commodities. Trade with advanced tools and real-time market data on a secure platform.",
+      cta1: "Start Trading",
+      cta2: "View Markets",
+      badge: "Global Markets Access"
     },
     {
-      title: "Your Money,",
-      titleHighlight: "Truly Borderless",
-      subtitle: "Cross-border transfers done right: fast, easy, and affordable. Send globally, receive locally. Easy and direct to your account.",
-      cta1: "Move Your Money",
-      cta2: "See Fees",
-      badge: "Borderless Transfers"
+      title: "Build Your",
+      titleHighlight: "Investment Portfolio",
+      subtitle: "Diversify across stocks, ETFs, and bonds. Create a balanced portfolio tailored to your financial goals with our intelligent investment tools.",
+      cta1: "Create Portfolio",
+      cta2: "See Strategies",
+      badge: "Smart Investing"
     }
   ];
 
@@ -199,6 +199,19 @@ export default function Hero() {
 
   return (
     <section className="relative overflow-hidden bg-[#1a1d29] pt-24 pb-20 md:pt-40 md:pb-32 px-4 sm:px-6 lg:px-8 min-h-screen flex items-center">
+      {/* Video Background */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover opacity-40"
+      >
+        <source src="/Financial_Video_Generation_Request.webm" type="video/webm" />
+        Your browser does not support the video tag.
+      </video>
+
+      {/* Fallback Canvas Background */}
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full pointer-events-none opacity-50"
@@ -303,19 +316,24 @@ export default function Hero() {
           </button>
         </div>
 
-        {/* Stats Section */}
-        <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-4 opacity-40 grayscale hover:grayscale-0 transition-all duration-700">
-          {[
-            { label: 'AUM', value: '$2.4B+' },
-            { label: 'Uptime', value: '99.9%' },
-            { label: 'Active Traders', value: '50k+' },
-            { label: 'Assets', value: '100+' },
-          ].map((stat, i) => (
-            <div key={i} className="flex flex-col items-center animate-float" style={{ animationDelay: `${i * 0.5}s` }}>
-              <span className="text-white text-2xl font-bold">{stat.value}</span>
-              <span className="text-gray-500 text-[10px] uppercase tracking-widest font-bold">{stat.label}</span>
-            </div>
-          ))}
+        {/* Stats Section with Enhanced Visibility */}
+        <div className="mt-20 relative">
+          {/* Backdrop for better contrast */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#1a1d29]/80 via-[#1a1d29]/60 to-[#1a1d29]/80 rounded-2xl" />
+          
+          <div className="relative grid grid-cols-2 md:grid-cols-4 gap-4 p-8 md:p-12 opacity-100 grayscale-0 transition-all duration-700">
+            {[
+              { label: 'AUM', value: '$2.4B+' },
+              { label: 'Uptime', value: '99.9%' },
+              { label: 'Active Traders', value: '50k+' },
+              { label: 'Assets', value: '100+' },
+            ].map((stat, i) => (
+              <div key={i} className="flex flex-col items-center animate-float" style={{ animationDelay: `${i * 0.5}s` }}>
+                <span className="text-white text-2xl md:text-3xl font-bold">{stat.value}</span>
+                <span className="text-gray-300 text-[10px] md:text-xs uppercase tracking-widest font-bold mt-2">{stat.label}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
