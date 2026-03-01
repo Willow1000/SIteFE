@@ -18,15 +18,21 @@ export default function Hero() {
       titleHighlight: "money is capable of",
       subtitle: "Invest in stocks, cryptocurrencies, and global assets. One app, every opportunity to build your financial future. Start with just $10.",
       cta1: "Open Your Account",
-      cta2: "Download the App",
+      cta1Action: "modal",
+      cta1Link: null,
+      cta2: "View Our Assets",
+      cta2Link: "#trading-assets",
       badge: "Trusted by 50k+ Traders"
     },
     {
       title: "Invest in",
       titleHighlight: "100+ Cryptocurrencies",
-      subtitle: "Explore our selection of digital assets including Bitcoin, Ethereum, and emerging altcoins. Download the app, find your favorite crypto, and start building your portfolio.",
+      subtitle: "Explore our selection of digital assets including Bitcoin, Ethereum, and emerging altcoins. Find your favorite crypto and start building your portfolio.",
       cta1: "Start Investing",
-      cta2: "Learn More",
+      cta1Action: "modal",
+      cta1Link: null,
+      cta2: "View Partners",
+      cta2Link: "#partners",
       badge: "Crypto Made Easy"
     },
     {
@@ -34,7 +40,10 @@ export default function Hero() {
       titleHighlight: "Forex & Commodities",
       subtitle: "Access major/minor currency pairs, precious metals, and energy commodities. Trade with advanced tools and real-time market data on a secure platform.",
       cta1: "Start Trading",
-      cta2: "View Markets",
+      cta1Action: "modal",
+      cta1Link: null,
+      cta2: "See Performance",
+      cta2Link: "#performance",
       badge: "Global Markets Access"
     },
     {
@@ -42,7 +51,10 @@ export default function Hero() {
       titleHighlight: "Investment Portfolio",
       subtitle: "Diversify across stocks, ETFs, and bonds. Create a balanced portfolio tailored to your financial goals with our intelligent investment tools.",
       cta1: "Create Portfolio",
-      cta2: "See Strategies",
+      cta1Action: "modal",
+      cta1Link: null,
+      cta2: "Read FAQs",
+      cta2Link: "#faq",
       badge: "Smart Investing"
     }
   ];
@@ -252,23 +264,35 @@ export default function Hero() {
                 </p>
                 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                  <button
-                    onClick={openSignup}
-                    className="group relative inline-flex items-center justify-center bg-[#4a9d7e] hover:bg-[#3d8567] text-white font-bold py-4 px-10 rounded-xl transition-all duration-300 shadow-[0_0_20px_rgba(74,157,126,0.3)] hover:shadow-[0_0_30px_rgba(74,157,126,0.5)] overflow-hidden"
-                  >
-                    <span className="relative z-10">{s.cta1}</span>
-                    <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700" />
-                  </button>
+                  {s.cta1Action === "modal" ? (
+                    <button
+                      onClick={openSignup}
+                      className="group relative inline-flex items-center justify-center bg-[#4a9d7e] hover:bg-[#3d8567] text-white font-bold py-4 px-10 rounded-xl transition-all duration-300 shadow-[0_0_20px_rgba(74,157,126,0.3)] hover:shadow-[0_0_30px_rgba(74,157,126,0.5)] overflow-hidden"
+                    >
+                      <span className="relative z-10">{s.cta1}</span>
+                      <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700" />
+                    </button>
+                  ) : s.cta1Link ? (
+                    <a
+                      href={s.cta1Link}
+                      className="group relative inline-flex items-center justify-center bg-[#4a9d7e] hover:bg-[#3d8567] text-white font-bold py-4 px-10 rounded-xl transition-all duration-300 shadow-[0_0_20px_rgba(74,157,126,0.3)] hover:shadow-[0_0_30px_rgba(74,157,126,0.5)] overflow-hidden"
+                    >
+                      <span className="relative z-10">{s.cta1}</span>
+                      <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700" />
+                    </a>
+                  ) : null}
                   
-                  <button
-                    onClick={openSignup}
-                    className="group inline-flex items-center justify-center text-gray-300 hover:text-white font-semibold py-4 px-10 rounded-xl border border-gray-700 hover:border-gray-500 transition-all duration-300"
-                  >
-                    {s.cta2}
-                    <svg className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                    </svg>
-                  </button>
+                  {s.cta2Link && (
+                    <a
+                      href={s.cta2Link}
+                      className="group inline-flex items-center justify-center text-gray-300 hover:text-white font-semibold py-4 px-10 rounded-xl border border-gray-700 hover:border-gray-500 transition-all duration-300"
+                    >
+                      {s.cta2}
+                      <svg className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                      </svg>
+                    </a>
+                  )}
                 </div>
               </div>
             </div>
